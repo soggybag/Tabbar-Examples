@@ -4,6 +4,8 @@
 --
 -----------------------------------------------------------------------------------------
 
+display.setStatusBar( display.HiddenStatusBar ) 
+
 local storyboard = require(  "storyboard" )
 -- load scenetemplate.lua
 storyboard.gotoScene( "chat" )
