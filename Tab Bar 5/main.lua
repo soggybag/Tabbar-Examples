@@ -4,30 +4,27 @@
 --
 -----------------------------------------------------------------------------------------
 
-local storyboard = require(  "storyboard" )
--- load scenetemplate.lua
-storyboard.gotoScene( "chat" )
+-- Load composer and widget libraries
+local composer = require(  "composer" )
+local widget = require( "widget" )
+
+
+-- load chat.lua
+composer.gotoScene( "chat" )
 
 -----------------------------------------------------------------------------------------
 
 -- Add any objects that should appear on all scenes below (e.g. tab bar, hud, etc.):
 
 
--- Create a Tab Bar in main. Creating the tab bar here will make it appear above all 
--- storyboard scenes. 
-
 -- Import the widget library
 local widget = require( "widget" )
 
 
--- This example improves on the last by abstracting. Here all tab bar buttons handle 
--- onPress with the same function. Each button now has an id (see below) that contains 
--- the name of the scene they will load. 
-
 -- These functions handle taps on the tab bar buttons.
 local function tap_tab_button( event )
 	local id = event.target._id -- Get the id of the button 
-	storyboard.gotoScene( id, {effect="slideLeft", time=300} )
+	composer.gotoScene( id, {effect="slideLeft", time=300} )
 	return true -- prevents the event from passing through to objects below
 end 
 

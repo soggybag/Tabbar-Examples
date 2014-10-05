@@ -1,95 +1,95 @@
-----------------------------------------------------------------------------------
---
+--------------------------------------------------------------------------------
 -- scenetemplate.lua
---
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
-local storyboard = require( "storyboard" )
-local scene = storyboard.newScene()
+-- Use this file as a template to create other scenes. It contains all of the 
+-- boiler plate code for creating a scene. 
 
-----------------------------------------------------------------------------------
--- 
---	NOTE:
---	
---	Code outside of listener functions (below) will only be executed once,
---	unless storyboard.removeScene() is called.
--- 
+-- A scene receives a create event when it is created for the first time. 
+-- use the create handler to create all of the objects the scene will display. 
+
+-- A scene receives a show event when it is moving into view. Use this activate 
+-- any systems the scene will use. For example add event listeners to buttons. 
+
+-- A scene receives an exit scene event when it leaves view. Use this event to 
+-- stop any systems the scene may be using when the scene leaves view. 
+
+--------------------------------------------------------------------------------
+
+
+
+-- Import the composer library
+local composer = require( "composer" )
+local scene = composer.newScene()
+
 ---------------------------------------------------------------------------------
 
----------------------------------------------------------------------------------
--- BEGINNING OF YOUR IMPLEMENTATION
----------------------------------------------------------------------------------
 
 -- Called when the scene's view does not exist:
-function scene:createScene( event )
+function scene:create( event )
 	local group = self.view
 
-	-----------------------------------------------------------------------------
+end
+
+---------------------------------------------------------------------------------
+
+function scene:show( event )
+    local sceneGroup = self.view
+    local phase = event.phase
+
+    if phase == "will" then
+        -- Called when the scene is still off screen and is about to move on screen
+       
+       
+    elseif phase == "did" then
+        -- Called when the scene is now on screen
+        -- 
+        -- INSERT code here to make the scene come alive
+        -- e.g. start timers, begin animation, play audio, etc
+        
+        
+    end 
+end
+
+---------------------------------------------------------------------------------
+
+function scene:hide( event )
+    local sceneGroup = self.view
+    local phase = event.phase
+
+    if event.phase == "will" then
+        -- Called when the scene is on screen and is about to move off screen
+        --
+        -- INSERT code here to pause the scene
+        -- e.g. stop timers, stop animation, unload sounds, etc.)
+        
+        
+    elseif phase == "did" then
+        -- Called when the scene is now off screen
 		
-	--	CREATE display objects and add them to 'group' here.
-	--	Example use-case: Restore 'group' from previously saved state.
-	
-	-----------------------------------------------------------------------------
-	
-end
-
-
--- Called immediately after scene has moved onscreen:
-function scene:enterScene( event )
-	local group = self.view
-	
-	-----------------------------------------------------------------------------
 		
-	--	INSERT code here (e.g. start timers, load audio, start listeners, etc.)
-	
-	-----------------------------------------------------------------------------
-	
+    end 
 end
 
+--------------------------------------------------------------------------------
 
--- Called when scene is about to move offscreen:
-function scene:exitScene( event )
-	local group = self.view
-	
-	-----------------------------------------------------------------------------
-	
-	--	INSERT code here (e.g. stop timers, remove listeners, unload sounds, etc.)
-	
-	-----------------------------------------------------------------------------
-	
-end
+function scene:destroy( event )
+    local sceneGroup = self.view
 
-
--- Called prior to the removal of scene's "view" (display group)
-function scene:destroyScene( event )
-	local group = self.view
-	
-	-----------------------------------------------------------------------------
-	
-	--	INSERT code here (e.g. remove listeners, widgets, save state, etc.)
-	
-	-----------------------------------------------------------------------------
-	
+    -- Called prior to the removal of scene's "view" (sceneGroup)
+    -- 
+    -- INSERT code here to cleanup the scene
+    -- e.g. remove display objects, remove touch listeners, save state, etc
 end
 
 
 ---------------------------------------------------------------------------------
--- END OF YOUR IMPLEMENTATION
----------------------------------------------------------------------------------
 
--- "createScene" event is dispatched if scene's view does not exist
-scene:addEventListener( "createScene", scene )
-
--- "enterScene" event is dispatched whenever scene transition has finished
-scene:addEventListener( "enterScene", scene )
-
--- "exitScene" event is dispatched before next scene's transition begins
-scene:addEventListener( "exitScene", scene )
-
--- "destroyScene" event is dispatched before view is unloaded, which can be
--- automatically unloaded in low memory situations, or explicitly via a call to
--- storyboard.purgeScene() or storyboard.removeScene().
-scene:addEventListener( "destroyScene", scene )
+-- Listener setup
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
 
 ---------------------------------------------------------------------------------
 

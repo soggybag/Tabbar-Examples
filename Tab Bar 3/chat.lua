@@ -1,19 +1,9 @@
-----------------------------------------------------------------------------------
---
--- scenetemplate.lua
---
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- Chat.lua
+--------------------------------------------------------------------------------
 
-local storyboard = require( "storyboard" )
-local scene = storyboard.newScene()
-
-----------------------------------------------------------------------------------
--- 
---	NOTE:
---	
---	Code outside of listener functions (below) will only be executed once,
---	unless storyboard.removeScene() is called.
--- 
+local composer = require( "composer" )
+local scene = composer.newScene()
 ---------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------
@@ -21,72 +11,78 @@ local scene = storyboard.newScene()
 ---------------------------------------------------------------------------------
 
 -- Called when the scene's view does not exist:
-function scene:createScene( event )
+function scene:create( event )
 	local group = self.view
 
-	local title = display.newText( "Chat", 0, 0, native.systemFont, 48 )
+	print("loading chat")
+
+	local title = display.newText( {
+		text="Chat", 
+		x=0, 
+		y=0, 
+		font=native.systemFont, 
+		fontSize=48
+	})
+	
 	title.x = display.contentCenterX
 	title.y = display.contentCenterY
 	group:insert( title )
 end
 
 
--- Called immediately after scene has moved onscreen:
-function scene:enterScene( event )
-	local group = self.view
-	
-	-----------------------------------------------------------------------------
+function scene:show( event )
+    local sceneGroup = self.view
+    local phase = event.phase
+
+    if phase == "will" then
+        -- Called when the scene is still off screen and is about to move on screen
+       
+       
+    elseif phase == "did" then
+        -- Called when the scene is now on screen
+        -- 
+        -- INSERT code here to make the scene come alive
+        -- e.g. start timers, begin animation, play audio, etc
+        
+        
+    end 
+end
+
+
+function scene:hide( event )
+    local sceneGroup = self.view
+    local phase = event.phase
+
+    if event.phase == "will" then
+        -- Called when the scene is on screen and is about to move off screen
+        --
+        -- INSERT code here to pause the scene
+        -- e.g. stop timers, stop animation, unload sounds, etc.)
+           
+    elseif phase == "did" then
+        -- Called when the scene is now off screen
 		
-	--	INSERT code here (e.g. start timers, load audio, start listeners, etc.)
-	
-	-----------------------------------------------------------------------------
-	
+    end 
 end
 
 
--- Called when scene is about to move offscreen:
-function scene:exitScene( event )
-	local group = self.view
-	
-	-----------------------------------------------------------------------------
-	
-	--	INSERT code here (e.g. stop timers, remove listeners, unload sounds, etc.)
-	
-	-----------------------------------------------------------------------------
-	
-end
+function scene:destroy( event )
+    local sceneGroup = self.view
 
-
--- Called prior to the removal of scene's "view" (display group)
-function scene:destroyScene( event )
-	local group = self.view
-	
-	-----------------------------------------------------------------------------
-	
-	--	INSERT code here (e.g. remove listeners, widgets, save state, etc.)
-	
-	-----------------------------------------------------------------------------
-	
+    -- Called prior to the removal of scene's "view" (sceneGroup)
+    -- 
+    -- INSERT code here to cleanup the scene
+    -- e.g. remove display objects, remove touch listeners, save state, etc
 end
 
 
 ---------------------------------------------------------------------------------
--- END OF YOUR IMPLEMENTATION
----------------------------------------------------------------------------------
 
--- "createScene" event is dispatched if scene's view does not exist
-scene:addEventListener( "createScene", scene )
-
--- "enterScene" event is dispatched whenever scene transition has finished
-scene:addEventListener( "enterScene", scene )
-
--- "exitScene" event is dispatched before next scene's transition begins
-scene:addEventListener( "exitScene", scene )
-
--- "destroyScene" event is dispatched before view is unloaded, which can be
--- automatically unloaded in low memory situations, or explicitly via a call to
--- storyboard.purgeScene() or storyboard.removeScene().
-scene:addEventListener( "destroyScene", scene )
+-- Listener setup
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
 
 ---------------------------------------------------------------------------------
 

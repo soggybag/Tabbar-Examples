@@ -4,76 +4,95 @@
 --
 -----------------------------------------------------------------------------------------
 
-local storyboard = require(  "storyboard" )
--- load scenetemplate.lua
-storyboard.gotoScene( "chat" )
+-- This example works with the tabbar widget and composer. 
 
 -----------------------------------------------------------------------------------------
 
--- Add any objects that should appear on all scenes below (e.g. tab bar, hud, etc.):
+-- This will appear behind all scenes. 
+local back = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
+back:setFillColor( 200/255, 200/255, 200/255 )
+
+-- Add elements above tis line that will appear behind composer scenes.
+-----------------------------------------------------------------------------------------
 
 
--- Create a Tab Bar in main. Creating the tab bar here will make it appear above all 
--- storyboard scenes. 
-
--- Import the widget library
+-- Load composer and widget libraries
+local composer = require(  "composer" )
 local widget = require( "widget" )
 
 
--- This example improves on the last by abstracting. Here all tab bar buttons handle 
--- onPress with the same function. Each button now has an id (see below) that contains 
--- the name of the scene they will load. 
-
--- These functions handle taps on the tab bar buttons.
-local function tap_tab_button( event )
-	local id = event.target._id -- Get the id of the button 
-	storyboard.gotoScene( id, {effect="slideLeft", time=300} )
-	return true -- prevents the event from passing through to objects below
-end 
+-- load chat.lua
+composer.gotoScene( "chat" )
 
 
--- This time I added an onPress to each button. This will handle taps on each 
--- tab bar button. (I added some line returns to make the options table easier to read)
+-----------------------------------------------------------------------------------------
+-- Add elements below this line that will appear in front of composer scenes.
+
+
+
+-------------------------------------------------------------------------
+-- Handle all of the tabbar buttons with a single function. 
+-- All of the tabbar buttons call on this function when pressed. 
+-- The function below gets the id of the button and loads the scene with that name. 
+-- Note that all of the buttons defined in the table below have an id property! 
+local function on_button( event )
+	local id = event.target._id	-- Get the id of the button.
+	-- Goto the scene whose name matches the id.  
+	composer.gotoScene( id, {effect="slideLeft", time=300} )
+	return true
+end
+----------------------------------------------------------------------
+
+
+-- This table defines buttons on the tabbar. Each button is defined as
+-- a label, a default and over image, width and height, and an onPress 
+-- handler which determines what happens when the tab button is pressed. 
 local options = { 
 	{
+		id="chat",
 		label="Chat", 
-		id="chat", -- id holds the scene template name
 		defaultFile="images/09-chat2.png", 
 		overFile="images/09-chat2-down.png", 
 		width=24, height=27,
-		onPress=tap_tab_button -- Each button uses same handler
+		onPress=on_button
 	},
 	{
+		id="mail",
 		label="Mail", 
-		id="mail", -- id holds the scene template name
 		defaultFile="images/18-envelope.png", 
 		overFile="images/18-envelope-down.png", 
 		width=24, height=27,
-		onPress=tap_tab_button -- Each button uses same handler
+		onPress=on_button
 	},
 	{
+		id="skull",
 		label="Skull", 
-		id="skull", -- id holds the scene template name
 		defaultFile="images/21-skull.png", 
 		overFile="images/21-skull-down.png", 
 		width=24, height=27,
-		onPress=tap_tab_button -- Each button uses same handler
+		onPress=on_button
 	},
 	{
+		id="beer",
 		label="Beer", 
-		id="beer", -- id holds the scene template name
 		defaultFile="images/88-beermug.png", 
 		overFile="images/88-beermug-down.png", 
 		width=24, height=27,
-		onPress=tap_tab_button -- Each button uses same handler
+		onPress=on_button
 	},
 	{
+		id="coffee",
 		label="Coffee", 
-		id="coffee", -- id holds the scene template name
 		defaultFile="images/100-coffee.png", 
 		overFile="images/100-coffee-down.png", 
 		width=24, height=27,
-		onPress=tap_tab_button -- Each button uses same handler
+		onPress=on_button
 	} }
 
-local tabbar = widget.newTabBar( {buttons=options, height=50, top=430} )
+
+-- Create the tabbar. 
+local tabbar = widget.newTabBar( {
+	buttons=options,  				-- Set the buttons
+	height=50, 						-- Set the height
+	top=display.contentHeight - 50	-- Set the top position
+} )

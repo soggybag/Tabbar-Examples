@@ -4,51 +4,68 @@
 --
 -----------------------------------------------------------------------------------------
 
-local storyboard = require(  "storyboard" )
+-- This example works with the tabbar widget and composer. 
 
--- load scenetemplate.lua
-storyboard.gotoScene( "chat" )
+-----------------------------------------------------------------------------------------
 
--- Add any objects that should appear on all scenes below (e.g. tab bar, hud, etc.):
+-- This will appear behind all scenes. 
+local back = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
+back:setFillColor( 240/255, 240/255, 250/255 )
+
+-- Add elements above tis line that will appear behind composer scenes.
+-----------------------------------------------------------------------------------------
 
 
--- Create a Tab Bar in main. Creating the tab bar here will make it appear above all 
--- storyboard scenes. 
-
--- Import the widget library
+-- Load composer and widget libraries
+local composer = require(  "composer" )
 local widget = require( "widget" )
+
+
+-- Set the default theme of widget to ios (original). 
 widget.setTheme( "widget_theme_ios" )
 
 
+-- load chat.lua
+composer.gotoScene( "chat" )
+
+
+-----------------------------------------------------------------------------------------
+-- Add elements below this line that will appear in front of composer scenes.
+
+
+
+-------------------------------------------------------------------------
 -- These functions handle taps on the tab bar buttons.
 local function tap_chat( event )
-	storyboard.gotoScene( "chat", {effect="slideLeft", time=300} )
+	composer.gotoScene( "chat", {effect="slideLeft", time=300} )
 	return true -- prevents the event from passing through to objects below
 end 
 
 local function tap_mail( event )
-	storyboard.gotoScene( "mail", {effect="slideLeft", time=300} )
+	composer.gotoScene( "mail", {effect="slideLeft", time=300} )
 	return true
 end
 
 local function tap_skull( event )
-	storyboard.gotoScene( "skull", {effect="slideLeft", time=300} )
+	composer.gotoScene( "skull", {effect="slideLeft", time=300} )
 	return true
 end
 
 local function tap_beer( event )
-	storyboard.gotoScene( "beer", {effect="slideLeft", time=300} )
+	composer.gotoScene( "beer", {effect="slideLeft", time=300} )
 	return true
 end
 
 local function tap_coffee( event )
-	storyboard.gotoScene( "coffee", {effect="slideLeft", time=300} )
+	composer.gotoScene( "coffee", {effect="slideLeft", time=300} )
 	return true
 end
+----------------------------------------------------------------------
 
 
--- This time I added an onPress to each button. This will handle taps on each 
--- tab bar button. (I added some line returns to make the options table easier to read)
+-- This table defines buttons on the tabbar. Each button is defined as
+-- a label, a default and over image, width and height, and an onPress 
+-- handler which determines what happens when the tab button is pressed. 
 local options = { 
 	{
 		label="Chat", 
@@ -86,4 +103,10 @@ local options = {
 		onPress=tap_coffee
 	} }
 
-local tabbar = widget.newTabBar( {buttons=options, height=50, top=430} )
+
+-- Create the tabbar. 
+local tabbar = widget.newTabBar( {
+	buttons=options,  				-- Set the buttons
+	height=50, 						-- Set the height
+	top=display.contentHeight - 50	-- Set the top position
+} )
